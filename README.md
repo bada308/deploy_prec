@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+# Docker로 React 개발 및 배포하기 실습
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 1. Setting Docker Container
 
-## Available Scripts
+- hub.docker.com에서 node 이미지 사용
+- 루트 디렉토리에 Dockerfile & .dockerignore 생성 후 작성
 
-In the project directory, you can run:
+## 2. Build Docker Image
 
-### `npm start`
+- `docker build -t react-docker .` 명령어로 이미지 빌드
+  - `-t` : 태그명 지정
+  - 구두점(.)은 현재 디렉토리를 의미
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 3. Create Docker Container
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- `docker run -d --name deploy_prec react-image` 명령어로 컨테이너 생성
+  - `-d` : 백그라운드 실행, 실행 후 컨테이너 ID 출력
+  - `--name` : 컨테이너 이름 지정
 
-### `npm test`
+## 4. Run Container and Port Forwarding
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 호스트에서 컨테이너로 접근하기 위해 포트 포워딩 설정이 필요
+- `docker rm deloy_prec -f` 명령어로 컨테이너 삭제 후 다시 생성
 
-### `npm run build`
+  - 보통 컨테이너를 삭제하기 전에 중지시키는 것이 좋음
+  - 중단은 `docker stop deploy_prec` 명령어로 가능
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `docker run -d --name deploy_prec -p 3306:3000 react-image` 명령어로 포트 포워딩 설정
+  - `-p` : 포트 포워딩 설정
+  - 3306 : 호스트 포트
+  - 3000 : 컨테이너 포트
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![alt text](image-1.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `docker exec -it deploy_prec /bin/bash` 명령어로 컨테이너에 접속
+  - `-it` : 인터렉티브 모드로 실행
+  - `/bin/bash` : bash 쉘 실행
 
-### `npm run eject`
+![alt text](image-2.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Reference
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [프론트엔드 개발자를 위한 Docker로 React 개발 및 배포하기](https://velog.io/@oneook/Docker%EB%A1%9C-React-%EA%B0%9C%EB%B0%9C-%EB%B0%8F-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0)
