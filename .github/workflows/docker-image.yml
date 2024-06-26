@@ -23,7 +23,7 @@ jobs:
       uses: docker/login-action@v3.2.0
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: $ {{ secrets.DOCKERHUB_PASSWORD }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
     
     - name: Set image name with date
       run: echo "IMAGE_NAME=bada308/video-react:$(date +%s)" >> $GITHUB_ENV
