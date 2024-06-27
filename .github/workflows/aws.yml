@@ -18,11 +18,10 @@ jobs:
       uses: actions/download-artifact@v4.1.7
       with:
         name: image-name
-        path: .
     
     - name: Read image name from file
       id: read-image-name
-      run: echo "IMAGE_NAME=$( cat image-name.txt)" >> $GITHUB_ENV
+      run: echo "IMAGE_NAME=$(cat image-name.txt)" >> $GITHUB_ENV
 
     - name: SSH into EC2 and deploy
       uses: appleboy/ssh-action@v1.0.3
