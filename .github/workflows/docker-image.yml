@@ -32,3 +32,13 @@ jobs:
       run: |
         docker build . --file Dockerfile -t ${{ env.IMAGE_NAME }}
         docker push ${{ env.IMAGE_NAME }}
+
+    - name: Save image name to file
+      run: echo ${{ env.IMAGE_NAME }} >> image-name.txt
+
+    - name: Upload image name artifact
+      uses: actions/upload-artifact@v4.3.3
+      with:
+        name: image-name
+        path: image-name.txt
+      
