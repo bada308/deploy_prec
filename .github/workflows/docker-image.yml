@@ -40,5 +40,5 @@ jobs:
       uses: actions/upload-artifact@v4.3.3
       with:
         name: image-name
-        path: image-name.txt
+        path: dist/output/image-name.txt
       
