@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
+import Webcam from 'react-webcam';
 import { io, Socket } from 'socket.io-client';
+import Video from './Video';
 
 const VideoChat = () => {
-  const localVideoRef = useRef<HTMLVideoElement>(null);
+  const localVideoRef = useRef<Webcam>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
 
   const [isStarted, setIsStarted] = useState(false);
@@ -13,7 +15,7 @@ const VideoChat = () => {
 
   useEffect(() => {
     // 시그널링 서버에 연결
-    const nextSocket = io(import.meta.env.VITE_SINAL_URL as string);
+    const nextSocket = io('http://localhost:8080/' as string);
     setSocket(nextSocket);
 
     // Google의 공개 STUN 서버를 사용하여 PeerConnection을 생성
@@ -86,7 +88,8 @@ const VideoChat = () => {
       audio: true,
     });
 
-    localVideoRef.current.srcObject = stream;
+    // localVideoRef.current.srcObject = stream;
+    localVideoRef.current.stream = stream;
     stream
       .getTracks()
       .forEach((track) => peerConnection?.addTrack(track, stream));
@@ -110,7 +113,7 @@ const VideoChat = () => {
       <div className="flex justify-center gap-2">
         <div className="flex flex-col items-center">
           <div className="font-semibold">내 화면</div>
-          <video ref={localVideoRef} autoPlay playsInline muted></video>
+          <Video ref={localVideoRef} />
         </div>
         <div className="flex flex-col items-center">
           <div className="font-semibold">상대 화면</div>
