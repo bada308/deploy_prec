@@ -14,3 +14,7 @@ Dockerfile
 # Ignore other files or directories that are not needed
 .git
 .gitignore
+.github/*
+
+# Ignore .env file
+.env
