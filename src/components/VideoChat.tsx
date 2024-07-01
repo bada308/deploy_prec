@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import { io, Socket } from 'socket.io-client';
-import Video from './Video';
+import Video, { videoSize } from './Video';
 
 const VideoChat = () => {
   const localVideoRef = useRef<Webcam>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  const remoteCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const [isStarted, setIsStarted] = useState(false);
   const [room, setRoom] = useState('test');
@@ -117,7 +118,19 @@ const VideoChat = () => {
         </div>
         <div className="flex flex-col items-center">
           <div className="font-semibold">상대 화면</div>
-          <video ref={remoteVideoRef} autoPlay playsInline></video>
+          <div className="relative w-fit h-fit">
+            <video
+              ref={remoteVideoRef}
+              autoPlay
+              playsInline
+              width={videoSize.width}
+              height={videoSize.height}
+            ></video>
+            <canvas
+              ref={remoteCanvasRef}
+              className="absolute top-0 left-0"
+            ></canvas>
+          </div>
         </div>
       </div>
       <div className="text-center font-semibold">Room Name: {room}</div>

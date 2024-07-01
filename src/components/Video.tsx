@@ -12,7 +12,7 @@ import {
 } from 'react';
 import { loadFaceDetectionModel } from '../utils/loadModel';
 
-const videoSize = {
+export const videoSize = {
   width: 640,
   height: 480,
 };
