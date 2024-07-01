@@ -12,7 +12,7 @@ COPY package-lock.json .
 
 # RUN: 명령어를 실행
 # npm install 명령어를 실행하여 package.json에 명시된 패키지를 설치
-RUN npm install
+RUN npm install --force
 
 # COPY: 로컬 파일을 이미지 내부로 복사
 # 현재 디렉토리의 모든 파일을 /app 디렉토리로 복사
