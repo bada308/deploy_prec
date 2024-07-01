@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import { io, Socket } from 'socket.io-client';
 import Video, { videoSize } from './Video';
+import { useSocketStore } from '../stores/socket';
 
 const VideoChat = () => {
   const localVideoRef = useRef<Webcam>(null);
@@ -11,6 +12,7 @@ const VideoChat = () => {
   const [isStarted, setIsStarted] = useState(false);
   const [room, setRoom] = useState('test');
   const [socket, setSocket] = useState<Socket | null>(null);
+  // const { socket, setSocket } = useSocketStore();
   const [peerConnection, setPeerConnection] =
     useState<RTCPeerConnection | null>(null);
 
@@ -78,6 +80,17 @@ const VideoChat = () => {
       await pc.addIceCandidate(new RTCIceCandidate(msg.candidate));
     });
 
+    nextSocket.on('filter', async (msg) => {
+      if (!msg || !remoteCanvasRef.current) return;
+      const ctx = remoteCanvasRef.current.getContext('2d');
+      if (!ctx) return;
+      const image = new Image();
+      image.src = `/filter/sunglasses.png`;
+
+      ctx.clearRect(0, 0, videoSize.width, videoSize.height);
+      ctx.drawImage(image, msg.x, msg.y, msg.width, msg.height);
+    });
+
     setPeerConnection(pc);
   }, []);
 
@@ -108,13 +121,14 @@ const VideoChat = () => {
     await peerConnection?.setLocalDescription(offer);
     socket?.emit('offer', { sdp: offer, room });
   };
+  if (!socket) return null;
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-center gap-2">
         <div className="flex flex-col items-center">
           <div className="font-semibold">내 화면</div>
-          <Video ref={localVideoRef} />
+          <Video socket={socket} ref={localVideoRef} />
         </div>
         <div className="flex flex-col items-center">
           <div className="font-semibold">상대 화면</div>
@@ -125,10 +139,12 @@ const VideoChat = () => {
               playsInline
               width={videoSize.width}
               height={videoSize.height}
-            ></video>
+            />
             <canvas
               ref={remoteCanvasRef}
               className="absolute top-0 left-0"
+              width={videoSize.width}
+              height={videoSize.height}
             ></canvas>
           </div>
         </div>
