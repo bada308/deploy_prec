@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import { io, Socket } from 'socket.io-client';
 import Video, { videoSize } from './Video';
-import { useSocketStore } from '../stores/socket';
 
 const VideoChat = () => {
   const localVideoRef = useRef<Webcam>(null);

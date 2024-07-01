@@ -11,7 +11,6 @@ import {
   useState,
 } from 'react';
 import { loadFaceDetectionModel } from '../utils/loadModel';
-import { useSocketStore } from '../stores/socket';
 import { Socket } from 'socket.io-client';
 
 export const videoSize = {
