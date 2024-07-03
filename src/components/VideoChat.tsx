@@ -17,7 +17,7 @@ const VideoChat = () => {
 
   useEffect(() => {
     // 시그널링 서버에 연결
-    const nextSocket = io('http://localhost:8080/' as string);
+    const nextSocket = io('http://43.200.1.142:8080/' as string);
     setSocket(nextSocket);
 
     // Google의 공개 STUN 서버를 사용하여 PeerConnection을 생성
